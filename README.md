@@ -16,7 +16,7 @@ require('history')
 
 or 
 
-```
+```lua
 require('history').setup({
   keybinds = {
     back = '<your back keybind>',
