@@ -20,7 +20,7 @@ or
 require('history').setup({
   keybinds = {
     back = '<your back keybind>',
-    forward = '<your back keybind>'
+    forward = '<your forward keybind>'
   }
 })
 ```
