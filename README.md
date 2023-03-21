@@ -5,7 +5,7 @@ adds a browser-like buffer history to each window open in neovim.
 ## Install
 
 ```lua
-use '~/lua/history.nvim/'
+use 'wilfreddenton/history.nvim'
 ```
 
 ## Setup
