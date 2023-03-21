@@ -3,7 +3,7 @@ local M = { histories = {} }
 M.push = function()
   local winid = vim.api.nvim_get_current_win()
   local bufnr = vim.api.nvim_get_current_buf()
-  if not M.histories[winid] then M.histories[winid] = {index = 0, bufnrs = {}} end
+  if not M.histories[winid] then M.histories[winid] = { index = 0, bufnrs = {} } end
   local h = M.histories[winid]
   if vim.bo.filetype == '' then return end
 
@@ -11,7 +11,7 @@ M.push = function()
   if bufnr_at_index and bufnr_at_index == bufnr then return end
 
   if h.index ~= #h.bufnrs then
-    for i=h.index + 1, #h.bufnrs do
+    for i = h.index + 1, #h.bufnrs do
       table.remove(h.bufnrs, i)
     end
   end
@@ -22,7 +22,7 @@ end
 
 M.back = function()
   local winid = vim.api.nvim_get_current_win()
-  local h = M.histories[winid] or {index = 0}
+  local h = M.histories[winid] or { index = 0 }
   if h.index > 1 then
     h.index = h.index - 1
     vim.api.nvim_set_current_buf(h.bufnrs[h.index])
@@ -31,7 +31,7 @@ end
 
 M.forward = function()
   local winid = vim.api.nvim_get_current_win()
-  local h = M.histories[winid] or {index = 0}
+  local h = M.histories[winid] or { index = 0 }
   if h.index < #h.bufnrs then
     h.index = h.index + 1
     vim.api.nvim_set_current_buf(h.bufnrs[h.index])
@@ -49,7 +49,7 @@ M.setup = function(opts)
   })
 
   vim.keymap.set('n', opts.keybinds.back or '<leader>bb', M.back)
-  vim.keymap.set('n', opts.keybinds.forward or'<leader>bf', M.forward)
+  vim.keymap.set('n', opts.keybinds.forward or '<leader>bf', M.forward)
 end
 
 return M
