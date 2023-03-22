@@ -55,12 +55,12 @@ end
 
 M.select_file_in_history = function()
   local index = vim.api.nvim_win_get_cursor(HISTORY_WINID)[1]
-  M.toggle_history_popup()
+  M.toggle_popup()
   local winid = vim.api.nvim_get_current_win()
   vim.api.nvim_set_current_buf(M.histories[winid].bufs[index].nr)
 end
 
-M.toggle_history_popup = function()
+M.toggle_popup = function()
   if HISTORY_WINID and vim.api.nvim_win_is_valid(HISTORY_WINID) then
     vim.api.nvim_win_close(HISTORY_WINID, true)
     HISTORY_WINID = nil
@@ -84,9 +84,9 @@ M.toggle_history_popup = function()
   })
   local bufnr = vim.api.nvim_win_get_buf(HISTORY_WINID)
   vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<Cmd> lua require('history').toggle_history_popup()<CR>", {})
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<Esc>", "<Cmd> lua require('history').toggle_history_popup()<CR>", {})
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-c>", "<Cmd> lua require('history').toggle_history_popup()<CR>", {})
+  vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<Cmd> lua require('history').toggle_popup()<CR>", {})
+  vim.api.nvim_buf_set_keymap(bufnr, "n", "<Esc>", "<Cmd> lua require('history').toggle_popup()<CR>", {})
+  vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-c>", "<Cmd> lua require('history').toggle_popup()<CR>", {})
   vim.api.nvim_buf_set_keymap(bufnr, "n", "<CR>", "<Cmd> lua require('history').select_file_in_history()<CR>", {})
   vim.api.nvim_win_set_option(HISTORY_WINID, "number", true)
   vim.api.nvim_win_set_cursor(HISTORY_WINID, { #contents, 0 })
@@ -94,7 +94,7 @@ M.toggle_history_popup = function()
     buffer = bufnr,
     nested = true,
     once = true,
-    callback = M.toggle_history_popup
+    callback = M.toggle_popup
   })
 end
 
@@ -110,7 +110,7 @@ M.setup = function(opts)
 
   vim.keymap.set('n', opts.keybinds.back or '<leader>bb', M.back)
   vim.keymap.set('n', opts.keybinds.forward or '<leader>bf', M.forward)
-  vim.keymap.set('n', opts.keybinds.toggle_history_popup or '<leader>bh', M.toggle_history_popup)
+  vim.keymap.set('n', opts.keybinds.view or '<leader>bv', M.toggle_popup)
 end
 
 return M
