@@ -5,7 +5,10 @@ adds a browser-like buffer history to each window open in neovim.
 ## Install
 
 ```lua
-use 'wilfreddenton/history.nvim'
+use {
+  'wilfreddenton/history.nvim',
+  requires = { { 'nvim-lua/plenary.nvim' } }
+}
 ```
 
 ## Setup
@@ -19,12 +22,20 @@ or
 ```lua
 require('history').setup({
   keybinds = {
-    back = '<your back keybind>',
-    forward = '<your forward keybind>'
+    back = '<your custom keybind>',
+    forward = '<your custom keybind>'
+    view = '<your custom keybind>'
   }
 })
 ```
 
 ## Usage
 
-By default, use `<leader>bb` to go back in buffer history and `<leader>bf`  to go forward in buffer history.
+Default keybinds:
+
+- back: `<leader>bb`
+- forward: `<leader>bf`
+- view: `<leader>bv`
+
+When the `view` popup is open, pressing `q`, `<Esc>`, or `<C-c>` will close it and
+pressing enter (`<CR>`) on any line will navigate the window to the referenced file.
