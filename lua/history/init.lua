@@ -99,6 +99,9 @@ M.toggle_popup = function()
 end
 
 M.setup = function(opts)
+  if not opts then opts = {} end
+  if not opts.keybinds then opts.keybinds = {} end
+
   local wilfred_denton_history_nvim = vim.api.nvim_create_augroup("WILFRED_DENTON_HISTORY_NVIM", {
     clear = true
   })

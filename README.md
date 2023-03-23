@@ -14,7 +14,7 @@ use {
 ## Setup
 
 ```lua
-require('history')
+require('history').setup()
 ```
 
 or 
