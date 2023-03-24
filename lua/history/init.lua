@@ -88,8 +88,9 @@ M.toggle_popup = function()
   vim.api.nvim_buf_set_keymap(bufnr, "n", "<Esc>", "<Cmd> lua require('history').toggle_popup()<CR>", {})
   vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-c>", "<Cmd> lua require('history').toggle_popup()<CR>", {})
   vim.api.nvim_buf_set_keymap(bufnr, "n", "<CR>", "<Cmd> lua require('history').select_file_in_history()<CR>", {})
+  vim.api.nvim_buf_add_highlight(bufnr, 0, "Identifier", h.index - 1, 0, -1)
   vim.api.nvim_win_set_option(POPUP_WINID, "number", true)
-  vim.api.nvim_win_set_cursor(POPUP_WINID, { #contents, 0 })
+  vim.api.nvim_win_set_cursor(POPUP_WINID, { h.index, 0 })
   vim.api.nvim_create_autocmd("BufLeave", {
     buffer = bufnr,
     nested = true,
