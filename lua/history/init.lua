@@ -60,6 +60,9 @@ M.select_file_in_history = function()
   vim.api.nvim_set_current_buf(M.histories[winid].bufs[index].nr)
 end
 
+local popup_title = false
+local popup_width = false
+
 M.toggle_popup = function()
   if POPUP_WINID and vim.api.nvim_win_is_valid(POPUP_WINID) then
     vim.api.nvim_win_close(POPUP_WINID, true)
@@ -78,9 +81,9 @@ M.toggle_popup = function()
     table.insert(contents, buf.nm)
   end
   POPUP_WINID = popup.create(contents, {
-    title = "History",
+    title = popup_title or "History",
     borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-    width = vim.api.nvim_win_get_width(winid) - 10,
+    width = popup_width or vim.api.nvim_win_get_width(winid) - 10,
   })
   local bufnr = vim.api.nvim_win_get_buf(POPUP_WINID)
   vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
@@ -103,6 +106,13 @@ M.setup = function(opts)
   if not opts then opts = {} end
   if not opts.keybinds then opts.keybinds = {} end
 
+  if opts.popup_title then popup_title = opts.popup_title end
+  if opts.popup_width then popup_width = opts.popup_width end
+  if opts.set_keybinds ~= false then opts.set_keybinds = true end
+
+  opts.popup_title = opts.popup_title or "History"
+  -- opts.set_keybinds = opts.set_keybinds or true
+
   local wilfred_denton_history_nvim = vim.api.nvim_create_augroup("WILFRED_DENTON_HISTORY_NVIM", {
     clear = true
   })
@@ -112,9 +122,11 @@ M.setup = function(opts)
     callback = M.push
   })
 
-  vim.keymap.set('n', opts.keybinds.back or '<leader>bb', M.back)
-  vim.keymap.set('n', opts.keybinds.forward or '<leader>bf', M.forward)
-  vim.keymap.set('n', opts.keybinds.view or '<leader>bv', M.toggle_popup)
+  if (opts.set_keybinds) then
+    vim.keymap.set('n', opts.keybinds.back or '<leader>bb', M.back)
+    vim.keymap.set('n', opts.keybinds.forward or '<leader>bf', M.forward)
+    vim.keymap.set('n', opts.keybinds.view or '<leader>bv', M.toggle_popup)
+  end
 end
 
 return M
